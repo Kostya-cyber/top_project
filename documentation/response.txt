@@ -1,0 +1,13 @@
+Success:
+{
+    "status": "success",
+    "data": {
+        ...
+    }
+}
+
+Fail: 
+{
+    "status": "fail",
+    "message": ...
+}
