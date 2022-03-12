@@ -19,7 +19,7 @@ export default () => {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Cookbook
             </Typography>
-            <Button color="inherit">Login</Button>
+            <Button color="inherit" href="/login">Login</Button>
           </Toolbar>
         </AppBar>
       </Box>
