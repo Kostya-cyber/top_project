@@ -1,8 +1,16 @@
 #!/bin/bash
 
+# RUN back-end
+
+echo "RUN back-end:"
+
+# RUN bank
+( cd back-end/bank ; ./vendor/bin/sail up -d ; ./vendor/bin/sail php artisan migrate ) # Fake data: ./vendor/bin/sail php artisan migrate --seed
+                                                                                       # Delete migrations: ./vendor/bin/sail php artisan migrate:reset
+
 
 # RUN front-end
 
-echo "RUN front-end:"
+echo -e "\nRUN front-end:"
 
 ( cd front-end ; docker-compose up -d )
