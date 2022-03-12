@@ -1,0 +1,8 @@
+#!/bin/bash
+
+
+# RUN front-end
+
+echo "RUN front-end:"
+
+( cd front-end ; docker-compose up -d )
