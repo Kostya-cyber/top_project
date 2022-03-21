@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { DeleteResult } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { DeleteUserDto } from './dto/delete-user.dto';
 import { GetUsers } from './dto/get-users.dto';
@@ -11,7 +12,12 @@ export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
   async createUser(body: CreateUserDto): Promise<UserEntity> {
-    return this.usersRepository.createUser(body);
+    try {
+      const result = await this.usersRepository.createUser(body);
+      return result;
+    } catch (err) {
+      throw new BadRequestException(err.message);
+    }
   }
 
   async getUsers(query: GetUsers): Promise<UserEntity[]> {
@@ -22,11 +28,15 @@ export class UsersService {
     return this.usersRepository.getUserById(id);
   }
 
-  async updateUserById(body: UpdateUserDto): Promise<void> {
+  async updateUserById(body: UpdateUserDto): Promise<UserEntity[]> {
     return this.usersRepository.updateUserById(body);
   }
 
-  async deleteUserById(body: DeleteUserDto): Promise<void> {
+  async deleteUserById(body: DeleteUserDto): Promise<DeleteResult> {
     return this.usersRepository.deleteUserById(body);
+  }
+
+  async findUserByLogin(login: string): Promise<UserEntity | undefined> {
+    return this.usersRepository.findUserByLogin(login);
   }
 }

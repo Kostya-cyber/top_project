@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 
 export class UpdateUserDto {
   @ApiProperty({ type: String })
@@ -9,16 +15,26 @@ export class UpdateUserDto {
 
   @ApiProperty({ type: String })
   @IsOptional()
-  @IsString()
-  login: string;
+  @IsEmail()
+  login?: string;
 
   @ApiProperty({ type: String })
   @IsOptional()
   @IsString()
-  password: string;
+  password?: string;
 
   @ApiProperty({ type: String })
   @IsOptional()
   @IsString()
-  username: string;
+  firstName?: string;
+
+  @ApiProperty({ type: String })
+  @IsOptional()
+  @IsString()
+  lastName?: string;
+
+  @ApiProperty({ type: String, description: 'this is role UUID' })
+  @IsOptional()
+  @IsUUID()
+  role: string;
 }
