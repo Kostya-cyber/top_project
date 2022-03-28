@@ -4,25 +4,26 @@ volumes:
   postgres:
 
 services:
-  db:
+  db_ingridients:
     image: 'postgres:13.1-alpine'
-    container_name: db
-    environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: ingridients
+    container_name: db_ingridients
+    env_file:
+      - .env
     ports:
       - "5400:5432"
     volumes:
       - postgres:/var/lib/postgresql/data
+      - ./src/main/resources/db-migrations/v-1.0-sql-migrations/initial-schema-import.sql:/docker-entrypoint-initdb.d/create_tables.sql
 
-  app:
+  app_catalog:
     image: 'ingridient-catalog'
     build:
       context: ./
       dockerfile: Dockerfile
-    container_name: app
+    container_name: app_catalog
+    env_file:
+      - .env
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      - db_ingridients
