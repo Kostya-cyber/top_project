@@ -16,7 +16,7 @@ insert into dish(name) values
 ('Азиатский салат с сырными шариками'),
 ('А-ля рыбные бутерброды');
 
-isert into dish_ingridients(dish_id, product_id, weight_gr) values
+insert into dish_ingridients(dish_id, product_id, weight_gr) values
 (1, 8, 100),
 (1, 9, 100),
 (1, 10, 300),

@@ -4,16 +4,13 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity(name="ingridient")
-@Table(name="ingridient")
-public class IngridientEntity extends BaseEntity{
-    @ManyToMany(mappedBy = "ingridients")
-    private Set<DishEntity> dishes;
+@Table(name="dish_ingridients")
+public class IngridientEntity extends BaseEntity<Integer>{
+    @Column
+    private int product_id;
+    private int weight_gr;
 
-    public Set<DishEntity> getDishes() {
-        return dishes;
-    }
-
-    public void setDishes(Set<DishEntity> dishes) {
-        this.dishes = dishes;
-    }
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "dish_id")
+    private DishEntity dish;
 }
