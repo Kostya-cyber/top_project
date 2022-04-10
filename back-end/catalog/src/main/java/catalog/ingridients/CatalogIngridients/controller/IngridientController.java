@@ -41,13 +41,8 @@ public class IngridientController {
 
     @PutMapping("/{id}")
     public AnswerWrapper<EmptyValue> updateIngridient(@PathVariable Integer id, @RequestBody IngridientEntity ingridient) {
-        IngridientEntity savedIngridient = service.findById(id);
-        savedIngridient.setName(ingridient.getName());
-        savedIngridient.setCalories(ingridient.getCalories());
-        savedIngridient.setCarbs(ingridient.getCarbs());
-        savedIngridient.setFats(ingridient.getFats());
-        savedIngridient.setProtein(ingridient.getProtein());
-        service.update(savedIngridient);
+        ingridient.setId(id);
+        service.update(ingridient);
         return wrap(new EmptyValue());
     }
 

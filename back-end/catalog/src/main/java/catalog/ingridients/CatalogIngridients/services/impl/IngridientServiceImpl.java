@@ -23,8 +23,17 @@ public class IngridientServiceImpl implements IngridientService {
 
     @Override
     public void update(IngridientEntity ingridient) throws IngridientNotFoundException {
-        if (repository.existsById(ingridient.getId())) {
-            repository.save(ingridient);
+        Optional<IngridientEntity> savedIngridientOpt = repository.findById(ingridient.getId());
+        if (savedIngridientOpt.isPresent()){
+            IngridientEntity savedIngridient = savedIngridientOpt.get();
+            savedIngridient.setName(ingridient.getName());
+            savedIngridient.setCalories(ingridient.getCalories());
+            savedIngridient.setCarbs(ingridient.getCarbs());
+            savedIngridient.setFats(ingridient.getFats());
+            savedIngridient.setProtein(ingridient.getProtein());
+            savedIngridient.setCost(ingridient.getCost());
+            savedIngridient.setQuantity(ingridient.getQuantity());
+            repository.save(savedIngridient);
         } else {
             throw new IngridientNotFoundException(ingridient.getId());
         }
