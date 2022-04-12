@@ -10,7 +10,7 @@ services:
     env_file:
       - .env
     ports:
-      - "5400:5432"
+      - "5401:5432"
     volumes:
       - postgres:/var/lib/postgresql/data
       - ./src/main/resources/db-migrations/v-1.0-sql-migrations/initial-schema-import.sql:/docker-entrypoint-initdb.d/create_tables.sql
@@ -24,6 +24,10 @@ services:
     env_file:
       - .env
     ports:
-      - "8080:8080"
+      - "8081:8081"
     depends_on:
       - db_ingridients
+
+networks:
+  dishes_host:
+    driver: bridge
