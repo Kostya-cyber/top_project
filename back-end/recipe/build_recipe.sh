@@ -1,4 +1,5 @@
-docker-compose -f docker-compose.yml down
-docker volume rm catalog_postgres
+docker rm app_recipe
+docker rm db_recipes
 docker volume rm recipe_postgres
+docker-compose up --build -d
 docker-compose up --build -d
