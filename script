@@ -20,9 +20,24 @@ echo "RUN back-end:"
 # Fake data: ./vendor/bin/sail php artisan migrate --seed
 # Delete migrations: ./vendor/bin/sail php artisan migrate:reset
 
+# RUN catalog
+(
+	cd back-end/catalog;
+	./build_catalog.sh
+)
+
+
+# RUN recipe
+(
+	cd back-end/recipe;
+	./build_recipe.sh
+)
+
 
 # RUN front-end
 
 echo -e "\nRUN front-end:"
 
 ( cd front-end ; docker-compose up -d )
+
+

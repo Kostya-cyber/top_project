@@ -1,0 +1,29 @@
+version: '3'
+
+volumes:
+  postgres:
+
+services:
+  db_recipes:
+    image: 'postgres:13.1-alpine'
+    container_name: db_recipes
+    env_file:
+      - .env
+    ports:
+      - "5400:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./src/main/resources/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
+
+  app_recipes:
+    image: 'recipe'
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: app_recipe
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db_recipes
