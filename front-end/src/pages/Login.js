@@ -1,19 +1,18 @@
-import React from 'react';
-import { 
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import {
   Avatar,
-  Button,
-  CssBaseline,
-  TextField,
-  FormControlLabel,
-  Checkbox,
-  Link,
-  Grid,
   Box,
+  Button,
+  Checkbox,
+  Container,
+  CssBaseline,
+  FormControlLabel,
+  Grid,
+  Link,
+  TextField,
   Typography,
-  Container 
-} from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-
+} from "@mui/material";
+import React from "react";
 
 export default () => {
   return (
@@ -22,12 +21,12 @@ export default () => {
       <Box
         sx={{
           marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -59,6 +58,7 @@ export default () => {
             label="Remember me"
           />
           <Button
+            href="/"
             type="submit"
             fullWidth
             variant="contained"
@@ -82,4 +82,4 @@ export default () => {
       </Box>
     </Container>
   );
-}
+};
