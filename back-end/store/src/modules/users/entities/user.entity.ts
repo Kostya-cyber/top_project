@@ -1,5 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { RoleEntity } from 'src/modules/roles/entities/role.entity';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'users' })
 export class UserEntity extends BaseEntity {
@@ -14,10 +22,20 @@ export class UserEntity extends BaseEntity {
   })
   @Column({
     type: 'varchar',
-    name: 'username',
+    name: 'first_name',
     nullable: false,
   })
-  username: string;
+  firstName: string;
+
+  @ApiProperty({
+    type: String,
+  })
+  @Column({
+    type: 'varchar',
+    name: 'last_name',
+    nullable: false,
+  })
+  lastName: string;
 
   @ApiProperty({
     type: String,
@@ -39,4 +57,8 @@ export class UserEntity extends BaseEntity {
     nullable: false,
   })
   password: string;
+
+  @OneToOne(() => RoleEntity)
+  @JoinColumn()
+  role: string;
 }

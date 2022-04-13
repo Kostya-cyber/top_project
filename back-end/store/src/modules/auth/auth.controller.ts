@@ -1,44 +1,46 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Request, Post, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Payload } from 'src/core/decorators/payload.decorator';
+import { JwtAuthGuard } from 'src/core/guards';
+import { FailInterface, SuccessInterface } from 'src/core/interfaces';
+import { CurrentUser } from 'src/core/strategies/current-user.interface';
+import { UserEntity } from '../users/entities/user.entity';
 import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import {
+  AccessTokenDto,
+  LoginDto,
+  RefreshTokenDto,
+  RegisterUserDto,
+} from './dto';
+import { LoginTokenDto } from './dto/login-token.dto';
 
 @Controller('auth')
 @ApiTags('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post()
-  create(@Body() createAuthDto: CreateAuthDto) {
-    return this.authService.create(createAuthDto);
+  @Post('/login')
+  async login(@Body() body: LoginDto): Promise<LoginTokenDto> {
+    return await this.authService.login(body);
   }
 
-  @Get()
-  findAll() {
-    return this.authService.findAll();
+  @Post('/registration')
+  async registration(
+    @Body() body: RegisterUserDto,
+  ): Promise<FailInterface | SuccessInterface<UserEntity>> {
+    return await this.authService.registration(body);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
+  @Post('/refreshToken')
+  async refreshToken(@Body() body: RefreshTokenDto): Promise<AccessTokenDto> {
+    const accessToken = await this.authService.refreshToken(body.refreshToken);
+    return { accessToken };
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authService.remove(+id);
+  @ApiBearerAuth('access-token')
+  @Post('/me')
+  @UseGuards(JwtAuthGuard)
+  whoAmI(@Payload() user: CurrentUser) {
+    return user;
   }
 }

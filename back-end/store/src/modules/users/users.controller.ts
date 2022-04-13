@@ -7,7 +7,14 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiOkResponse,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { FailInterface, SuccessInterface } from 'src/core/interfaces';
+import { DeleteResult } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { DeleteUserDto } from './dto/delete-user.dto';
 import { GetUsers } from './dto/get-users.dto';
@@ -21,7 +28,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('createUser')
-  @ApiResponse({ type: UserEntity })
+  @ApiOkResponse({ type: UserEntity })
   public async create(@Body() body: CreateUserDto): Promise<UserEntity> {
     return await this.usersService.createUser(body);
   }
@@ -39,12 +46,23 @@ export class UsersController {
   }
 
   @Patch('updateUser')
-  public async updateUserById(@Body() body: UpdateUserDto): Promise<void> {
+  @ApiResponse({ type: UserEntity })
+  public async updateUserById(
+    @Body() body: UpdateUserDto,
+  ): Promise<UserEntity[]> {
     return await this.usersService.updateUserById(body);
   }
 
   @Delete('deleteUserById')
-  public async remove(@Body() body: DeleteUserDto): Promise<void> {
-    return await this.usersService.deleteUserById(body);
+  @ApiBadRequestResponse({ type: FailInterface })
+  public async remove(
+    @Body() body: DeleteUserDto,
+  ): Promise<SuccessInterface<DeleteResult> | FailInterface> {
+    const deleteResult = await this.usersService.deleteUserById(body);
+    if (!deleteResult.affected) {
+      return { status: 'fail', message: 'user with id was not found' };
+    } else {
+      return { status: 'success', data: deleteResult };
+    }
   }
 }
